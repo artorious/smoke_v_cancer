@@ -6,17 +6,12 @@ The computed correlation, along with other factors, can be used to determined
 if there is a causal relationship between the two.
 
 Data Set
-=======================
-One data set gives the percentage of the population that smoke cigarettes 
-within the United States by state. The other gives the rate of lung cancer 
-per 100,000 individuals by state. 
-
-
- 
+=========
+[Cigarette Smoking and Incidence of Lung Cancer Data](static/cigarette_v_cancer.png)
 <br>
-<img src='static/cigarette_v_cancer.png' alt='Cigarette Smoking and Incidence of Lung Cancer Data'>
-
-
+One data set gives the percentage of the population that smoke cigarettes 
+within the United States by state. 
+The other gives the rate of lung cancer per 100,000 individuals by state. 
 
 Usage
 =====
@@ -27,6 +22,8 @@ $ <kbd>python3 smoke_v_cancer.py</kbd>
 
 Pseudocode Reference
 ====================
+[The Mathematical formula for computing correlation](static/correlation_formula.png)
+
 
 Attribution
 ===========
