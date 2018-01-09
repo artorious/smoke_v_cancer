@@ -50,17 +50,47 @@ NOTE: Example Analogy
 #---------------------------------------------------------------------------------------------
 
 # TODO:
-# Import Math Module
-# 
-
+# Import Math Module -> Calculate correlation
 #------------------------------------------------------
 
 def open_files():
     """ () -> tuple
-    Get file Names from User, Open Smoking and Cancer rate data files
-    Return tuple of file objects, (smoking_data_file, cancer_data_file)
+    Prompts user for file names and opens the files.
+    Returns tuple of file objects, (smoking_data_file, cancer_data_file)
+    Raises an IOError exception if the files are not successfully opened
+    after four attempts of entering file names
     """
-    pass
+    # Init controls for loop that continually prompt the user until correct 
+    # file names for the data files are entered (4 Attempts).
+    smoking_data_file_opened = False
+    cancer_data_file_opened = False
+    num_attempts = 4
+
+    # prompt for file names and attempt to open files
+    while ((not smoking_data_file_opened) or (not cancer_data_file_opened)) \
+            and (num_attempts > 0):
+        
+        try:
+            if not smoking_data_file_opened:
+                file_name = input('Enter smoking data file name: ')
+                smoking_data_file = open(file_name, 'r')
+                smoking_data_file_opened = True
+          
+            if not cancer_data_file_opened:
+                file_name = input('Enter lung cancer data file name: ')
+                cancer_data_file = open(file_name, 'r')
+                cancer_data_file_opened = True
+        
+        except IOError as ioerr:
+            print('File not found:{0} - Try again\n'.format(file_name))
+            num_attempts -= 1
+    
+    # If one or more file not opened, raise IOError exception
+    if not smoking_data_file_opened or not cancer_data_file_opened:
+        raise IOError('one or more file not opened')
+    
+    else:
+        return (smoking_data_file, cancer_data_file)
 
 def read_files(smoking_data_file, cancer_data_file):
     """
@@ -80,7 +110,7 @@ def main():
     """Cigarette Use/Lung Cancer Correlation Program 
     
     Module utilizes three functions;
-        open_files(), 
+        open_files()
         read_files()
         calculate_correlation()
     """
@@ -105,3 +135,7 @@ def main():
 
 if __name__ == '__main__':
     main()
+
+
+ 
+
