@@ -22,36 +22,7 @@ NOTE: Example Analogy
     Therefore, most correlation values fall somewhere between -1 and 1.
 """
 
-### PROBLEM ANALYSIS
-# The two sets of data provided contain;
-#   - Percentage of the population that smokes, state-by-state
-#   - State-by-state rates of incidence of lung cancer per 100,000 individuals
-#
-# Using The Mathematical formula for computing correlation on the provided data;
-#   N -> 48 (all states except Arizona & Wisconsin whose data is not provided)
-#   x and y values -> the percent of population that smokes and lung cancer cases per 100,000 individuals
-#       Example x and y values for Alabama, (x=23.3) and (y=75.1)
-# NOTE: To apply this formula, the values of x and y do not have to be in the same units
-
-### PROGRAM DESIGN
-# Data is provided in  two comma-separated (CSV) files.
-# TODO:   
-#   -> Read the data from csv files
-#   -> Using this data, compute the correlation of the two sets of data in a scale of 
-#       -1 (a perfect negative correlation) to 1 (a perfect positive correlation)
-
-### Meeting the Program Requirements
-# The program must only display the correlation value between the two sets of data.
-# The raw numerical value will simply be dispalyed on the screen
-
-### Data Description
-# Store data from files in two corresponding 'parallel' lists of floating-point values
-# for easiy access during calculation of correlation
-#---------------------------------------------------------------------------------------------
-
-# TODO:
-# Import Math Module -> Calculate correlation
-#------------------------------------------------------
+import math 
 
 def open_files():
     """ () -> tuple
@@ -106,7 +77,7 @@ def read_files(smoking_data_file, cancer_data_file):
     # Read past file headers
     smoking_data_file.readline()
     cancer_data_file.readline()
-    
+
     while not eof:
         # read line data from each file
         s_line = smoking_data_file.readline()
@@ -133,10 +104,48 @@ def read_files(smoking_data_file, cancer_data_file):
 
 def calculate_correlation(smoking_data, cancer_data):
     """ (list, list) -> int
-    Calculate correlation
-    """
-    pass
     
+    Calculates and returns the correlation value for the data provided
+    in lists <smoking_data>, <cancer_data>
+    """
+    # Using The Mathematical formula for computing correlation on the provided data;
+    #   N -> 48 (all states except Arizona & Wisconsin whose data is not provided)
+    #   x and y values -> the percent of population that smokes and lung cancer cases per 100,000 individuals
+    #       Example x and y values for Alabama, (x=23.3) and (y=75.1)
+    # NOTE: To apply this formula, the values of x and y do not have to be in the same units
+    # 
+
+    # init
+    sum_smoking_vals = sum_cancer_vals = 0
+    sum_smoking_sqrd = sum_cancer_sqrd = 0
+    sum_products = 0
+
+    # calculate intermediate correlation values
+    num_values = len(smoking_data)
+    
+    for data_entry in range(0,num_values):
+        
+        sum_smoking_vals = sum_smoking_vals + float(smoking_data[data_entry][1])
+        sum_cancer_vals = sum_cancer_vals + float(cancer_data[data_entry][1])
+
+        sum_smoking_sqrd = sum_smoking_sqrd +  \
+                              float(smoking_data[data_entry][1]) ** 2
+        sum_cancer_sqrd = sum_cancer_sqrd +  \
+                              float(cancer_data[data_entry][1]) ** 2
+
+        sum_products = sum_products + float(smoking_data[data_entry][1]) *  \
+                       float(cancer_data[data_entry][1])
+
+    # calculate and display correlation value
+    numer = (num_values * sum_products) - \
+            (sum_smoking_vals * sum_cancer_vals)
+
+    denom = math.sqrt(abs( \
+        ((num_values * sum_smoking_sqrd) - (sum_smoking_vals ** 2)) * \
+        ((num_values * sum_cancer_sqrd) - (sum_cancer_vals ** 2)) \
+        ))
+       
+    return numer / denom
 
 def main():
     """Cigarette Use/Lung Cancer Correlation Program 
