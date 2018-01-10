@@ -69,7 +69,6 @@ def open_files():
     # prompt for file names and attempt to open files
     while ((not smoking_data_file_opened) or (not cancer_data_file_opened)) \
             and (num_attempts > 0):
-        
         try:
             if not smoking_data_file_opened:
                 file_name = input('Enter smoking data file name: ')
@@ -93,11 +92,44 @@ def open_files():
         return (smoking_data_file, cancer_data_file)
 
 def read_files(smoking_data_file, cancer_data_file):
+    """ (file obj, file obj) -> tuple
+
+    Reads the data from the provided file objects smoking_data_file and
+    cancer_data_file.
+    Returns a list of the data read from each in a tuple ([smoking_data], [cancer_data])
     """
-    Read file data
-    Return 
-    """
-    pass
+    # Init 
+    smoking_data = []
+    cancer_data = []
+    empty_str = ''
+    eof = False # control for loop that reads data until eof
+    # Read past file headers
+    smoking_data_file.readline()
+    cancer_data_file.readline()
+    
+    while not eof:
+        # read line data from each file
+        s_line = smoking_data_file.readline()
+        c_line = cancer_data_file.readline()
+        
+        # Check if at end-of-file for both files
+        if s_line == empty_str and c_line == empty_str:
+            eof = True # Exit reading loop
+
+        # Check if end of smoking data file only
+        elif s_line == empty_str:
+            raise IOError('Unexpected end-of-file: smoking data file')
+        
+        # Check if end of cancer data file only
+        elif c_line == empty_str:
+            raise IOError('Unexpected end-of-file: cancer data file')
+        
+        # Append line data to each list
+        else:
+            smoking_data.append(s_line.strip().split(','))
+            cancer_data.append(c_line.strip().split(','))
+
+    return (smoking_data, cancer_data)
 
 def calculate_correlation(smoking_data, cancer_data):
     """ (list, list) -> int
